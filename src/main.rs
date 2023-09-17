@@ -49,25 +49,36 @@ impl Album for CompactDisc {
 }
 
 fn main() {
-    let lover = Vinyl {
+    let lover = Box::new(Vinyl {
         name: "Lover".to_string(),
         artist: "Taylor Swift".to_string(),
         side: "A".to_string(),
-    };
-    let midnights = CompactDisc {
+    }) as Box<dyn Album>;
+    let midnights = Box::new(CompactDisc {
         name: "Midnights".to_string(),
         artist: "Taylor Swift".to_string(),
-    };
+    }) as Box<dyn Album>;
 
-    let vinyl_collection = vec![lover];
-    for mut album in vinyl_collection {
+    let collection: Vec<Box<dyn Album>> = vec![lover, midnights];
+    for mut album in collection {
         album.play();
-        album.flip();
-        album.play();
-    }
 
-    let cd_collection = vec![midnights];
-    for album in cd_collection {
-        album.play();
+        // Trying to know whether it is a vinyl or not, to know if we need to
+        // flip it, fails with:
+        //
+        // error[E0599]: no method named `downcast` found for struct `Box<dyn Album>` in the current scope
+        //    --> src/main.rs:79:34
+        //    |
+        // 79 |         if let Ok(vinyl) = album.downcast::<Vinyl>() {
+        //    |                                  ^^^^^^^^ method not found in `Box<dyn Album>`
+        //    |
+        //    = note: the method was found for
+        //            - `Box<(dyn Any + 'static), A>`
+        //            - `Box<(dyn Any + Send + 'static), A>`
+        //            - `Box<(dyn Any + Send + Sync + 'static), A>`
+        if let Ok(vinyl) = album.downcast::<Vinyl>() {
+            vinyl.flip();
+            vinyl.play();
+        }
     }
 }
