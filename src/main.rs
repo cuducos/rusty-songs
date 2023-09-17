@@ -25,7 +25,26 @@ impl Album for Vinyl {
     }
 
     fn play(&self) {
-        println!("[Vinyl] {} (Side {})", self.display_name(), self.side);
+        println!(
+            "[Vinyl] Playing {} (Side {})",
+            self.display_name(),
+            self.side
+        );
+    }
+}
+
+struct CompactDisc {
+    name: String,
+    artist: String,
+}
+
+impl Album for CompactDisc {
+    fn display_name(&self) -> String {
+        format!("{} by {}", self.name, self.artist)
+    }
+
+    fn play(&self) {
+        println!("[CD] Playing {}", self.display_name());
     }
 }
 
@@ -35,10 +54,20 @@ fn main() {
         artist: "Taylor Swift".to_string(),
         side: "A".to_string(),
     };
-    let collection = vec![lover];
-    for mut album in collection {
+    let midnights = CompactDisc {
+        name: "Midnights".to_string(),
+        artist: "Taylor Swift".to_string(),
+    };
+
+    let vinyl_collection = vec![lover];
+    for mut album in vinyl_collection {
         album.play();
         album.flip();
+        album.play();
+    }
+
+    let cd_collection = vec![midnights];
+    for album in cd_collection {
         album.play();
     }
 }
