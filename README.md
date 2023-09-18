@@ -1,10 +1,14 @@
 # Rust songs
 
-Repository to epxlore dynamic dispatch in Rust.
+Repository to explore dynamic dispatch in Rust.
+
+## TLDR
+
+Fixed using `enum` — see last commit (1cfbf1c).
 
 ## Context
 
-The idea is to have a `collection` os vinyls and CDs and play them all. If the album is a vinyl, we have to flip it and play the other side befor emoving on to the next album.
+The idea is to have a `collection` of vinyls and CDs and play them all. If the album is a vinyl, we have to flip it and play the other side before moving on to the next album.
 
 The summary of the code is:
 
